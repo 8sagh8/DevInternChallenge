@@ -7,18 +7,32 @@
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/pictureApp/styles.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
 
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
         <div style="text-align: center;">
             <h1 id="headingStyle" style="margin-top: 10px;" >Photo Gallery from Sammar Abbas</h1>
-            <a href="{% url 'pictureApp:index' %}"><button>Home Page</button></a>
-            <button id="hideAll">Hide options</button>
+            <form action="{% url 'pictureApp:searchPhoto' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group rounded" style="width: 50%; margin-left: 25%; margin-bottom: 15px;" >
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                    aria-describedby="search-addon" name="search_input" />
+                    <span class="input-group-text border-0" id="search-addon" type='submit'>
+                    <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </form>
+
+            <a href="{% url 'pictureApp:index' %}" style="margin-right: 20px"><button>Home Page</button></a>
+            
             <button id="displayAdd">Add Single Photo</button>
             <button id="displayBulk">Add Multiple Photos</button>
             <button id="displayDelete">Delete Multiple Photos</button>
-            <button id="searchPicture">Search Picture</button>
+            
+            <button id="hideAll" style="margin-left: 20px">Hide options</button>
        
             <hr />
 
@@ -36,32 +50,23 @@
                 <hr />
             </div>
 
-            <div id="deleteMultiDiv">
-                <h1>delete Multi Div</h1>>
-                <hr />
-            </div>
-
-            <div id="searchDiv">
-                <h1>Search Div</h1>>
-                <hr />
-            </div>
         </div>
         
 
         {% block body %}
         {% endblock %}
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
         <script>
             $(document).ready(function(){
-                const headerDiv = ['#formDiv', '#addMultiDiv', '#deleteMultiDiv', '#searchDiv'];
+                const headerDiv = ['#formDiv', '#addMultiDiv'];
                 $("#formDiv").hide();
                 $("#addMultiDiv").hide();
-                $("#deleteMultiDiv").hide();
-                $("#searchDiv").hide();
                 
                 function hideAllFunction (){
                     let i = 0;
@@ -90,13 +95,34 @@
                 // display form div to add a Photo on click
                 $("#displayDelete").click(function(){
                     hideAllFunction();
-                    $("#deleteMultiDiv").show();
-                });
+                    
+                    var arr = [];
+                    $('input.check:checkbox:checked').each(function () {
+                        let checkedBox_ids = $(this).attr("data-id");
+                        arr.push(checkedBox_ids);
+                    });
+                    
 
-                // display form div to add a Photo on click
-                $("#searchPicture").click(function(){
-                    hideAllFunction();
-                    $("#searchDiv").show();
+
+                    $.ajax({
+                            type: 'POST',
+                            headers: { "X-CSRFToken": '{{csrf_token}}' },
+                            url: 'deleteMultiPhoto',
+                            
+                            data: {data : arr,
+                            }, 
+                            success: function (data) {
+
+
+                        location.reload();
+
+                        
+
+                            },
+                            error: function() { 
+                                alert("Error");
+                            }
+                        });
                 });
             });
         </script>

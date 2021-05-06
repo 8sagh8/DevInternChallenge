@@ -6,24 +6,32 @@
 
     <div class="row">
         {% for p in photo %}
-            <div class="col-sm-4" >
+            <div class="col-sm-4"style="padding-top: 50px" >
                 <div class="card" >
-                    <img src={{p.image.url}} atl="pictures" class="img-thumbnail" >
-                    <div class="row">
-                        <div class="col-lg-8" style="padding-left: 50px;">
-                            <h1>{{p.title}}</h1>
+                    <img src={{p.image.url}} alt="pictures" class="img-thumbnail" style="height :231px; width :600px"  >
+                    <div class="row" style="height:55px">
+                        <div class="col-lg-8" >
+                            
+                            
+                                <input class="check" type="checkbox"  data-id="{{p.id}}">
+                                <label style="color: red; font-size: 18px;">{{p.title}}</label>
+                              
+                             
                         </div>
 
                         <div class="col-lg-4">
-                            <div class="row" style="padding-top: 10px;">
-                                <div class="col-sm-6">
-                                    <a href="{% url 'pictureApp:modifyPhoto' p.id %}">
-                                        <button>Modify</button>
+                            <div class="row mt-2"  >
+
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-4">
+                                    <a >
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.id}}"><i class="far fa-edit"></i></button>
                                     </a>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-1">
                                     <a href="{% url 'pictureApp:deletePhoto' p.id %}">
-                                        <button>Delete</button>
+                                        <button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button>
                                     </a>
                                 </div>
                             </div>
@@ -32,8 +40,37 @@
                 </div>
             </div>
             
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal-{{p.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{% url 'pictureApp:persistPhoto' p.id %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div>
+                    <img src={{p.image.url}} alt="pictures" class="img-thumbnail">
+                </div>
+                <input type="text" value='{{p.title}}' name='newTitle' width="100%"> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
         {% empty %}
-            <h2 style="text-align: center;">No Photo in Gallery </h2>
+            <div style="text-align: center;">
+                <h2>No Photo in Gallery </h2>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
