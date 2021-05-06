@@ -1,0 +1,27 @@
+/* Heading Style */
+#headingStyle {
+  padding-bottom: 2rem;
+}
+
+/* Picture Add Div */
+#addPicDiv {
+  margin: auto;
+  width: 60%;
+}
+
+/* Picture Input Field Style */
+.picFieldStyle {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* Button Style */
+.styleButton {
+  border: solid 1px gray;
+  background-color: antiquewhite;
+  border-radius: 25%;
+  width: 25%;
+
+  color: blue;
+  font-weight: bolder;
+}

@@ -1,0 +1,39 @@
+{% extends 'pictureApp/sample.html' %}
+
+{% block title %}Photo Gallery{% endblock %} 
+
+{% block body %}
+
+    <div class="row">
+        {% for p in photo %}
+            <div class="col-sm-4" >
+                <div class="card" >
+                    <img src={{p.image.url}} atl="pictures" class="img-thumbnail" >
+                    <div class="row">
+                        <div class="col-lg-8" style="padding-left: 50px;">
+                            <h1>{{p.title}}</h1>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-sm-6">
+                                    <a href="{% url 'pictureApp:modifyPhoto' p.id %}">
+                                        <button>Modify</button>
+                                    </a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="{% url 'pictureApp:deletePhoto' p.id %}">
+                                        <button>Delete</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        {% empty %}
+            <h2 style="text-align: center;">No Photo in Gallery </h2>
+        {% endfor %}
+    </div>
+{% endblock %}
