@@ -11,4 +11,5 @@ urlpatterns = [
     path('deletePhoto/<_id>', views.deletePhoto, name="deletePhoto"),
     path('deleteMultiPhoto/', views.deleteMultiPhoto, name="deleteMultiPhoto"),
     path('searchPhoto/', views.searchPhoto, name="searchPhoto"),
+    path('statusChange/<_id>', views.statusChange, name="statusChange"),
 ]

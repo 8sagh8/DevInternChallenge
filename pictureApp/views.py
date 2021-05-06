@@ -123,4 +123,25 @@ def searchPhoto(request):
         "form": form,
     })
 
+def statusChange(request, _id):
+    photo_obj = Photo.objects.get(id = eval(_id))
+    if photo_obj.status == True:
+        photo_obj.status = False
+    else:
+        photo_obj.status = True
+    photo_obj.save()
+
+    form=ImageForm()
+    photoList = []
+
+    obj = Photo.objects.all()
+    for p in obj:
+        photoList.append(p) 
+    photoList.reverse()
+
+    return redirect('/', {
+        "photo": photoList,
+        "form": form
+    })
+
 

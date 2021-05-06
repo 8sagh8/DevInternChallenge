@@ -19,7 +19,7 @@
                             <div class="row mt-2"  >
 
                                 <div class="col-sm-2">
-                                    <a href="">
+                                    <a href="{% url 'pictureApp:statusChange' p.id %}">
                                         {% if p.status %} 
                                             <button class="btn btn-primary"><i class="fas fa-lock"></i></button>
                                         {% else %}
