@@ -1,6 +1,6 @@
 {% extends 'pictureApp/sample.html' %}
 
-{% block title %}Photo Gallery{% endblock %} 
+{% block title %}{{p.user}} Photo Gallery{% endblock %} 
 
 {% block body %}
 
@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <a >
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.1.id}}"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.1.id}}"><i class="far fa-edit"></i></button>
                                     </a>
                                 </div>
                                 <div class="col-sm-1">
@@ -59,7 +59,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{% url 'pictureApp:persistPhoto' p.1.id %}" method="POST">
+        <!-- <form action="{% url 'pictureApp:persistPhoto' p.1.id %}" method="POST">
             {% csrf_token %}
             <div class="modal-body">
                 <div>
@@ -71,7 +71,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-        </form>
+        </form> -->
       </div>
     </div>
   </div>

@@ -16,15 +16,15 @@
     </head>
     <body>
         <nav class="navbar navbar-inverse">
-            <a  href="#" style="position: absolute; color:aqua; font-size: larger; padding-left: 20px;"><h1>Photo Gallery</h1></a>
-            
+            <a  href="#" style="position: absolute; color:aqua; font-size: larger; padding-left: 20px;"><h1>Photo Gallery</h1></a>           
+
             {% if isSignIn %}
                 <a href="{% url 'pictureApp:logout' %}" style="font-size: medium; position: absolute; right: 20px">
                     <span class="glyphicon glyphicon-user"></span> Logout
                 </a>
             {% else %}
                 
-                <a href="#"  data-toggle="modal" data-target="#exampleModal" 
+                <a href="#"  data-toggle="modal" data-target="#loginModal" 
                     style="font-size: medium; position: absolute; right: 20px">
                     {% if isValidEntry %}
                         <span style="color: aqua;">Invalid username OR password</span>
@@ -33,9 +33,9 @@
                 </a>
             {% endif %}
         </nav> 
-
+        
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -48,11 +48,11 @@
                         <form method="POST" action="{% url 'pictureApp:login' %}">
                             {% csrf_token %}
                             <div class="form-group">
-                            <label for="exampleInputEmail1">Username</label>
+                            <label>Username</label>
                             <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username">
                             </div>
                             <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
+                            <label>Password</label>
                             <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                             </div>
                             
@@ -70,19 +70,31 @@
                 <div class="input-group rounded" style="width: 50%; margin-left: 25%; margin-bottom: 15px;" >
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                     aria-describedby="search-addon" name="search_input" />
-                    <span class="input-group-text border-0" id="search-addon" type='submit'>
+                    <button class="input-group-text border-0" id="search-addon" type='submit'>
                     <i class="fas fa-search"></i>
-                    </span>
+                    </button>
                 </div>
             </form>
 
-            <a href="{% url 'pictureApp:index' %}" style="margin-right: 20px"><button>Home Page</button></a>
-            
-            <button id="displayAdd">Add Single Photo</button>
-            <button id="displayBulk">Add Multiple Photos</button>
-            <button id="displayDelete">Delete Multiple Photos</button>
-            
-            <button id="hideAll" style="margin-left: 20px">Hide options</button>
+            <span>
+                <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">Home Page</a>
+                <button id="displayAdd" class="btn btn-primary" type="submit">Add Single Photo</button>
+                <button id="displayBulk" class="btn btn-primary" type="submit">Add Multiple Photos</button>
+                 <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModaladdmultiplehotos"><i class="far fa-edit"></i></button>
+                <button id="displayDelete" class="btn btn-primary" type="submit">Delete Multiple Photos</button>
+
+                <span class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" style="margin-left: 20px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Filter Photo
+                    </button>
+                    <span class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'pictureApp:userPrivatePhotos' %}">User Private Photos</a>
+                        <a class="dropdown-item" href="#">User Public Photos</a>
+                        <a class="dropdown-item" href="#">All Private Photos</a>
+                        <a class="dropdown-item" href="#">All Private Photos</a>
+                    </span>
+                </span>
+            </span>
        
             <hr />
 
@@ -95,19 +107,29 @@
                 <hr />
             </div>
 
-            <div id="addMultiDiv">
-                <h1>add Multi Div</h1>>
-                <hr />
-            </div>
-
         </div>
         
+
+
+        <div class="modal fade" id="exampleModaladdmultiplehotos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
 
         {% block body %}
         {% endblock %}
         
         <!-- Footer -->
-        <div class="navbar-inverse" style="position:absolute; bottom: 0; width: 100%; 
+        <div class="bg-info " style="bottom: 0; width: 100%; 
                     color: white; text-align: center; margin-top: 50px;"> 
   
             <h3 style="color:azure;">Website Developer: Sammar Abbas - 
@@ -121,9 +143,8 @@
     
         <script>
             $(document).ready(function(){
-                const headerDiv = ['#formDiv', '#addMultiDiv'];
+                const headerDiv = ['#formDiv'];
                 $("#formDiv").hide();
-                $("#addMultiDiv").hide();
                 
                 function hideAllFunction (){
                     let i = 0;
@@ -132,22 +153,12 @@
                     }
                 }
 
-                // hide divs for additional tasks
-                $("#hideAll").click(function(){
-                    hideAllFunction();
-                });
-
                 // display form div to add a Photo on click
                 $("#displayAdd").click(function(){
                     hideAllFunction();
                     $("#formDiv").show();
                 });
 
-                // display form div to add a Photo on click
-                $("#displayBulk").click(function(){
-                    hideAllFunction();
-                    $("#addMultiDiv").show();
-                });
 
                 // display form div to add a Photo on click
                 $("#displayDelete").click(function(){
@@ -164,20 +175,21 @@
                     $.ajax({
                             type: 'POST',
                             headers: { "X-CSRFToken": '{{csrf_token}}' },
-                            url: 'deleteMultiPhoto',
+                            url: 'http://127.0.0.1:8000/deleteMultiPhoto/',
                             
                             data: {data : arr,
                             }, 
                             success: function (data) {
 
-
-                        location.reload();
+                                // window.location('http://127.0.0.1:8000/')
+                          location.reload();
 
                         
 
                             },
                             error: function() { 
-                                alert("Error");
+                                // window.location('http://127.0.0.1:8000/')
+                                 location.reload();
                             }
                         });
                 });

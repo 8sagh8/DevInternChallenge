@@ -12,6 +12,7 @@ urlpatterns = [
     path('deleteMultiPhoto/', views.deleteMultiPhoto, name="deleteMultiPhoto"),
     path('searchPhoto/', views.searchPhoto, name="searchPhoto"),
     path('statusChange/<_id>', views.statusChange, name="statusChange"),
+    path('userPrivatePhotos', views.userPrivatePhotos, name="userPrivatePhotos"),
     path('logout', views.logout, name="logout"),
     path('login', views.login, name="login"),
 ]

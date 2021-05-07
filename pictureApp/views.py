@@ -57,80 +57,45 @@ def index(request):
         "isSignIn": is_sign_in
         })
 
-# Create your views here.
-def modifyPhoto(request, _id):
-    obj = Photo.objects.all()
-    form=ImageForm()  
-    photoList = []
-    for p in obj:
-        if str(p.id) == _id:
-            photoList.append(p)
-    
-    return render(request,"pictureApp/modify.html", {
-        "photo":photoList, 
-        "form": form
-        })
-
-# Persisting Photo title after modification
-def persistPhoto(request, _id):
-    form=ImageForm()
-    is_sign_in = isSignIn(request)  #get is signed in
-
-    if request.method == "POST":
-        title = request.POST['newTitle']
-        photo_obj = Photo.objects.get(id=eval(_id))
-        photo_obj.title= title
-        photo_obj.save()
-
-    photoList = currentPhoto(request)
-
-    return redirect ("/", {
-        "photo": photoList,
-        "form": form,
-        "isSignIn": is_sign_in
-    })
-
-
 
 def deletePhoto(request, _id):
     photo_obj = Photo.objects.get(id=eval(_id)) # get photo object by id
     file_path = 'static/photosFolder/' + str(photo_obj.image)   # get file full path
     os.remove(file_path)    # delete file from local folder
     photo_obj.delete()      # delete object data from database
-    is_sign_in = isSignIn(request)  #get is signed in
 
-    form=ImageForm()
-    photoList = currentPhoto(request)
-    
-    return redirect("/", {
-        "photo": photoList,
-        "form": form,
-        "isSignIn": is_sign_in
-    }) 
+    return redirect("/") 
 
 def deleteMultiPhoto(request):
-    is_sign_in = isSignIn(request)  #get is signed in
-
+   
     print("~~~~~ I am In deleteMulti", flush=True )
     if request.method == 'POST':
         id_List = request.POST.getlist('data[]')
 
         for _id in id_List:
             p_obj = Photo.objects.get(id=eval(_id))
-            file_path = 'static/photosFolder/' + str(photo_obj.image)   # get file full path
+            file_path = 'static/photosFolder/' + str(p_obj.image)   # get file full path
             os.remove(file_path)    # delete file from local folder
             p_obj.delete()
 
-    form=ImageForm()
-    photoList = currentPhoto(request)
+    return ("done");
+    print("******* I am done", flush=True)
+    # return json(success, "done", 200)
+    # return redirect('/')
 
-    return redirect('/', {
-        "photo": photoList,
-        "form": form,
-        "isSignIn": is_sign_in
-    })
+# Persisting Photo title after modification
+def persistPhoto(request, _id):
+    print("-------------------------I am in PersistPhoto", flush=True)
+    if request.method == "POST":
+        title = request.POST['newTitle']
+        photo_obj = Photo.objects.get(id=eval(_id))
+        photo_obj.title= title
+        photo_obj.save()
+
+    return redirect ("/")
 
 def searchPhoto(request):
+    print("-------------------------I am in Search", flush=True)
     is_sign_in = isSignIn(request)  #get is signed in
     search_value = None
     form=ImageForm()
@@ -139,23 +104,33 @@ def searchPhoto(request):
 
     if request.method == 'POST':
         search_value = request.POST['search_input']
-
+    print("-------------------------PASS METHOD", flush=True)
     if search_value != None:
-        for p in obj:
-            if p.status == False or (p.user == str(request.user)): 
-                if search_value in p.title.lower():
-                    photoList.append(p)
+        # for p in obj:
+            # if p.status == False or (p.user == str(request.user)): 
+            #     if search_value.lower() in p.title.lower():
+        #     photoList.append(p)
+        # photoList.reverse()
+        # for p in photoList:
+        #     print("~~~", p, flush=True)
+        photoList = obj
+        return render(request,"pictureApp/index.html", {
+            "isSignIn": is_sign_in,
+            "form": form,
+            "photo": photoList
+        })
+        
+    print("-------------------------PASS FOR LOOP", flush=True)
     
-    photoList.reverse()
 
-    return redirect('/', {
-        "photo": photoList,
-        "form": form,
-        "isSignIn": is_sign_in
-    })
+    return redirect("/")
+    # return render(request, 'pictureApp/index.html', {
+    #     "photo": photoList,
+    #     "form": form,
+    #     "isSignIn": is_sign_in
+    # });
 
 def statusChange(request, _id):
-    is_sign_in = isSignIn(request)  #get is signed in
     photo_obj = Photo.objects.get(id = eval(_id))
     if photo_obj.status == True:
         photo_obj.status = False
@@ -163,27 +138,34 @@ def statusChange(request, _id):
         photo_obj.status = True
     photo_obj.save()
 
-    form=ImageForm()
-    photoList = currentPhoto(request)
+    return redirect('/')
 
-    return redirect('/', {
-        "photo": photoList,
+def userPrivatePhotos(request):
+    is_sign_in = isSignIn(request)  #get is signed in
+    form=ImageForm()    
+    photoList = []
+    obj = Photo.objects.all()
+
+    for p in obj:
+        print(str(request.user), "|", p.user, flush=True)
+        if str(request.user) == p.user:
+            if p.status == True:
+                photoList.append(p)
+
+
+    for p in photoList:
+        print("------------->>>>", p, flush=True)
+    return render(request,"pictureApp/userPrivatePhotos.html", {
+        "photo": photoList, 
         "form": form,
         "isSignIn": is_sign_in
-    })
+        })
 
 ### Log out View
 def logout(request):
-    auth.logout(request)            # logout
-    is_sign_in = isSignIn(request)  # get is signed in
-    form=ImageForm()
-    photoList = currentPhoto(request)
+    auth.logout(request) # logout
+    return redirect('/')
 
-    return redirect('/', {
-        "photo": photoList,
-        "form": form,
-        "isSignIn": is_sign_in
-    })
 
 ### Login View
 def login(request):
