@@ -14,9 +14,13 @@ def index(request):
         form=ImageForm(data=request.POST,files=request.FILES)
         if form.is_valid():
             form.save()
+            temp = Photo.objects.latest('id')
+            temp.user = str(request.user)
+            temp.save()
     else:
         form=ImageForm() 
-
+    
+    
     photo=Photo.objects.all()
     for p in photo:
         photoList.append(p)
