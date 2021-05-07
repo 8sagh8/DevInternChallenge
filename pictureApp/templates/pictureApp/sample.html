@@ -1,20 +1,70 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="../../static/pictureApp/styles.css">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
+        
 
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
+        <nav class="navbar navbar-inverse">
+            <a  href="#" style="position: absolute; color:aqua; font-size: larger; padding-left: 20px;"><h1>Photo Gallery</h1></a>
+            
+            {% if isSignIn %}
+                <a href="{% url 'pictureApp:logout' %}" style="font-size: medium; position: absolute; right: 20px">
+                    <span class="glyphicon glyphicon-user"></span> Logout
+                </a>
+            {% else %}
+                
+                <a href="#"  data-toggle="modal" data-target="#exampleModal" 
+                    style="font-size: medium; position: absolute; right: 20px">
+                    {% if isValidEntry %}
+                        <span style="color: aqua;">Invalid username OR password</span>
+                    {% endif %}
+                    <span class="glyphicon glyphicon-log-in"></span> Login
+                </a>
+            {% endif %}
+        </nav> 
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">LogIn Page</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'pictureApp:login' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                            <label for="exampleInputEmail1">Username</label>
+                            <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username">
+                            </div>
+                            <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div style="text-align: center;">
-            <h1 id="headingStyle" style="margin-top: 10px;" >Photo Gallery from Sammar Abbas</h1>
+
             <form action="{% url 'pictureApp:searchPhoto' %}" method="POST">
                 {% csrf_token %}
                 <div class="input-group rounded" style="width: 50%; margin-left: 25%; margin-bottom: 15px;" >
@@ -57,11 +107,11 @@
         {% endblock %}
         
         <!-- Footer -->
-        <div class="fixed-bottom" style="text-align: center;"> 
-            <footer style="background-color:aqua;">
-                <h3 style="color: brown;">Website Developer: Sammar Abbas<br>
-                <a href="mailto:mastersagh@hotmail.com" style="color: black;">Contact Email</a></h3>
-            </footer> 
+        <div class="navbar-inverse" style="position:absolute; bottom: 0; width: 100%; 
+                    color: white; text-align: center; margin-top: 50px;"> 
+  
+            <h3 style="color:azure;">Website Developer: Sammar Abbas - 
+            <a href="mailto:mastersagh@hotmail.com"">Contact : mastersagh@hotmail.com</a></h3>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
