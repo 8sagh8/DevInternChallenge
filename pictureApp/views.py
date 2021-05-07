@@ -7,6 +7,8 @@ from .form import *
 
 # Create your views here.
 def index(request):
+    auth_person = request.user
+    print("auth=>", auth_person, " type: ", type(auth_person), " str:", str(auth_person), flush=True)
     photoList = []
     if request.method == "POST":
         form=ImageForm(data=request.POST,files=request.FILES)
