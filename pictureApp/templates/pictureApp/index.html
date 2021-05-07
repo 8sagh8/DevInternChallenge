@@ -8,19 +8,20 @@
         {% for p in photo %}
             <div class="col-sm-4"style="padding-top: 50px" >
                 <div class="card" >
-                    <img src={{p.image.url}} alt="pictures" class="img-thumbnail" style="height :231px; width :600px"  >
+                    <img src={{p.1.image.url}} alt="pictures" class="img-thumbnail" style="height :231px; width :600px"  >
                     <div class="row" style="height:55px">
                         <div class="col-lg-8" >
-                            <input class="check" type="checkbox"  data-id="{{p.id}}">
-                            <label style="color: red; font-size: 18px;">{{p.title}} - owner: {{p.user}}}</label>
+                            <input class="check" type="checkbox"  data-id="{{p.1.id}}">
+                            <label style="color: red; font-size: 18px;">{{p.1.title}}</label>
                         </div>
 
                         <div class="col-lg-4">
+                            {% if p.0 %}
                             <div class="row mt-2"  >
 
                                 <div class="col-sm-2">
-                                    <a href="{% url 'pictureApp:statusChange' p.id %}">
-                                        {% if p.status %} 
+                                    <a href="{% url 'pictureApp:statusChange' p.1.id %}">
+                                        {% if p.1.status %} 
                                             <button class="btn btn-primary"><i class="fas fa-lock"></i></button>
                                         {% else %}
                                             <button class="btn btn-secondary"><i class="fas fa-lock-open"></i></button>
@@ -30,15 +31,18 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <a >
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.id}}"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.1.id}}"><i class="far fa-edit"></i></button>
                                     </a>
                                 </div>
                                 <div class="col-sm-1">
-                                    <a href="{% url 'pictureApp:deletePhoto' p.id %}">
+                                    <a href="{% url 'pictureApp:deletePhoto' p.1.id %}">
                                         <button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button>
                                     </a>
                                 </div>
                             </div>
+                            {% else %}
+                            <div>Owned by other</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -46,7 +50,7 @@
             
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal-{{p.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModal-{{p.1.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -55,13 +59,13 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{% url 'pictureApp:persistPhoto' p.id %}" method="POST">
+        <form action="{% url 'pictureApp:persistPhoto' p.1.id %}" method="POST">
             {% csrf_token %}
             <div class="modal-body">
                 <div>
-                    <img src={{p.image.url}} alt="pictures" class="img-thumbnail">
+                    <img src={{p.1.image.url}} alt="pictures" class="img-thumbnail">
                 </div>
-                <input type="text" value='{{p.title}}' name='newTitle' width="100%"> 
+                <input type="text" value='{{p.1.title}}' name='newTitle' width="100%"> 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
