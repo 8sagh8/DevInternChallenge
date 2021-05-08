@@ -57,6 +57,15 @@ def index(request):
         "isSignIn": is_sign_in
         })
 
+# Add Multiple Photos
+def addMultiplePhotos(request):
+    if request.method == "POST":
+        images = request.FILES.getlist('images')
+        for i in images:
+            photo = Photo.objects.create(title="New", image=i, user=str(request.user))
+            photo.save()
+
+    return redirect('/')
 
 def deletePhoto(request, _id):
     photo_obj = Photo.objects.get(id=eval(_id)) # get photo object by id

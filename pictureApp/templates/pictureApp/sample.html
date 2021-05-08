@@ -76,11 +76,11 @@
                 </div>
             </form>
 
-            <span>
+            <span>  
                 <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">Home Page</a>
-                <button id="displayAdd" class="btn btn-primary" type="submit">Add Single Photo</button>
-                <button id="displayBulk" class="btn btn-primary" type="submit">Add Multiple Photos</button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModaladdmultiplehotos"><i class="far fa-edit"></i></button>
+                <button id="displayAdd" data-toggle="modal" data-target="#addSinglePhoto" class="btn btn-primary" type="submit">Add Single Photo</button>
+                <button id="displayAdd" data-toggle="modal" data-target="#addMultiplePhoto" class="btn btn-primary" type="submit">Add Multiple Photos</button>
+                <button id="displayBulk" data-toggle="modal" data-target="#exampleModaladdmultiplehotos" class="btn btn-primary" type="submit">Aaadd Multiple Photos</button>
                 <button id="displayDelete" class="btn btn-primary" type="submit">Delete Multiple Photos</button>
 
                 <span class="dropdown">
@@ -98,13 +98,56 @@
        
             <hr />
 
-            <div id="formDiv">
-                <form action="." method="POST" enctype="multipart/form-data" style="margin-left: 10rem;">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit" class="btn btn-lg btn-success">Upload</button>
-                </form>
-                <hr />
+            <!-- Modal -->
+            <div class="modal fade" id="addSinglePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Single Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="." method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label >Photo Title: </label>  {{form.title}} 
+                            {{form.image}}
+                            
+                            
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addMultiplePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Multiple Photos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'pictureApp:addMultiplePhotos' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input required name="images" type="file" multiple class="form-control-file">                       
+                            
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                </div>
             </div>
 
         </div>
