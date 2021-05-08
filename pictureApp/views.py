@@ -149,8 +149,28 @@ def userPrivatePhotos(request):
     for p in obj:
         if str(request.user) == p.user:
             temp = []
-            if p.status == True:
-                temp.append(True)
+            if p.status == True:    # True means photos status is Private
+                temp.append(True)   # True allow permission to edit
+                temp.append(p)
+                photoList.append(temp)
+
+    return render(request,"pictureApp/index.html", {
+        "photo": photoList, 
+        "form": form,
+        "isSignIn": is_sign_in
+        })
+
+def userPublicPhotos(request):
+    is_sign_in = isSignIn(request)  #get is signed in
+    form=ImageForm()    
+    photoList = []
+    obj = Photo.objects.all()
+
+    for p in obj:
+        if str(request.user) == p.user:
+            temp = []
+            if p.status == False:    # False means photos status is Private
+                temp.append(True)   # True allow permission to edit
                 temp.append(p)
                 photoList.append(temp)
 

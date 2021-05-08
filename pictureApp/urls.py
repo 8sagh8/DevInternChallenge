@@ -13,6 +13,7 @@ urlpatterns = [
     path('searchPhoto/', views.searchPhoto, name="searchPhoto"),
     path('statusChange/<_id>', views.statusChange, name="statusChange"),
     path('userPrivatePhotos', views.userPrivatePhotos, name="userPrivatePhotos"),
+    path('userPublicPhotos', views.userPublicPhotos, name="userPublicPhotos"),
     path('logout', views.logout, name="logout"),
     path('login', views.login, name="login"),
 ]
