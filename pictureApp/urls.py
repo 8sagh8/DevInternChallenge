@@ -14,6 +14,8 @@ urlpatterns = [
     path('statusChange/<_id>', views.statusChange, name="statusChange"),
     path('userPrivatePhotos', views.userPrivatePhotos, name="userPrivatePhotos"),
     path('userPublicPhotos', views.userPublicPhotos, name="userPublicPhotos"),
+    path('userAllPhotos', views.userAllPhotos, name="userAllPhotos"),
+    path('allPublicPhotos', views.allPublicPhotos, name="allPublicPhotos"),
     path('logout', views.logout, name="logout"),
     path('login', views.login, name="login"),
 ]

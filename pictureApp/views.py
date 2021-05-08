@@ -130,6 +130,7 @@ def searchPhoto(request):
     #     "isSignIn": is_sign_in
     # });
 
+# change status from Private to Public and ViceVersa
 def statusChange(request, _id):
     photo_obj = Photo.objects.get(id = eval(_id))
     if photo_obj.status == True:
@@ -140,6 +141,7 @@ def statusChange(request, _id):
 
     return redirect('/')
 
+# to display only Current User's Private Photos
 def userPrivatePhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
     form=ImageForm()    
@@ -160,6 +162,7 @@ def userPrivatePhotos(request):
         "isSignIn": is_sign_in
         })
 
+# to display only Current User's Public Photos
 def userPublicPhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
     form=ImageForm()    
@@ -169,7 +172,7 @@ def userPublicPhotos(request):
     for p in obj:
         if str(request.user) == p.user:
             temp = []
-            if p.status == False:    # False means photos status is Private
+            if p.status == False:    # False means photos status is Public
                 temp.append(True)   # True allow permission to edit
                 temp.append(p)
                 photoList.append(temp)
@@ -180,6 +183,50 @@ def userPublicPhotos(request):
         "isSignIn": is_sign_in
         })
 
+# to display only Current User's All Photos
+def userAllPhotos(request):
+    is_sign_in = isSignIn(request)  #get is signed in
+    form=ImageForm()    
+    photoList = []
+    obj = Photo.objects.all()
+
+    for p in obj:
+        temp = []
+        if str(request.user) == p.user:
+            temp.append(True)   # True allow permission to edit
+            temp.append(p)
+            photoList.append(temp)
+
+    return render(request,"pictureApp/index.html", {
+        "photo": photoList, 
+        "form": form,
+        "isSignIn": is_sign_in
+        })
+
+# to display All Public Photo of Current User's and Other Users
+def allPublicPhotos(request):
+    is_sign_in = isSignIn(request)  #get is signed in
+    form=ImageForm()    
+    photoList = []
+    obj = Photo.objects.all()
+
+    for p in obj:
+        temp = []
+        if p.status == False:   # False means status is Public
+            if str(request.user) == p.user:
+                temp.append(True)   # True allow permission to edit
+                temp.append(p)
+                photoList.append(temp)
+            else:
+                temp.append(False)   # False don't grant permission to edit
+                temp.append(p)
+                photoList.append(temp)
+
+    return render(request,"pictureApp/index.html", {
+        "photo": photoList, 
+        "form": form,
+        "isSignIn": is_sign_in
+        })
 ### Log out View
 def logout(request):
     auth.logout(request) # logout
