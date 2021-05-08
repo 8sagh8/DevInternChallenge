@@ -3,8 +3,8 @@
 {% block title %}Photo Gallery{% endblock %} 
 
 {% block body %}
-
-    <div class="row">
+    
+    <div class="row" >
         {% for p in photo %}
             <div class="col-sm-4"style="padding-top: 50px" >
                 <div class="card" >
@@ -76,7 +76,7 @@
     </div>
   </div>
         {% empty %}
-            <div style="text-align: center;">
+            <div style="text-align: center; border: solid 2px black;">
                 <h2>No Photo in Gallery </h2>
             </div>
         {% endfor %}
