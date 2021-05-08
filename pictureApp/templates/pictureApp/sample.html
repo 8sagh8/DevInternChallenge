@@ -80,7 +80,7 @@
                 <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">Home Page</a>
                 <button id="displayAdd" class="btn btn-primary" type="submit">Add Single Photo</button>
                 <button id="displayBulk" class="btn btn-primary" type="submit">Add Multiple Photos</button>
-                 <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModaladdmultiplehotos"><i class="far fa-edit"></i></button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModaladdmultiplehotos"><i class="far fa-edit"></i></button>
                 <button id="displayDelete" class="btn btn-primary" type="submit">Delete Multiple Photos</button>
 
                 <span class="dropdown">
@@ -129,8 +129,9 @@
         {% endblock %}
         
         <!-- Footer -->
-        <div class="bg-info " style="bottom: 0; width: 100%; 
-                    color: white; text-align: center; margin-top: 50px;"> 
+        <div class="bg-info mt-8 " style="bottom: 0; width: 100%; 
+                    color: white; text-align: center; margin-top: 50px; height:auto !important;
+    min-height:100%;margin-top: 500px;"> 
   
             <h3 style="color:azure;">Website Developer: Sammar Abbas - 
             <a href="mailto:mastersagh@hotmail.com"">Contact : mastersagh@hotmail.com</a></h3>

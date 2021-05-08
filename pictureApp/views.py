@@ -22,13 +22,13 @@ def currentPhoto(request):
     photo=Photo.objects.all()
 
     for p in photo:
-        temp = []
+        temp = []   # at Index 0 will store True/False and Index 1 will store photo object
         if currentUser == p.user:
-            temp.append(True)
+            temp.append(True)   # TRUE is to show edit button
             temp.append(p)
             photoList.append(temp)
         elif p.status == False:
-            temp.append(False)
+            temp.append(False)  # FALSE is to hide edit buttons
             temp.append(p)
             photoList.append(temp)
     photoList.reverse()
@@ -147,15 +147,14 @@ def userPrivatePhotos(request):
     obj = Photo.objects.all()
 
     for p in obj:
-        print(str(request.user), "|", p.user, flush=True)
         if str(request.user) == p.user:
+            temp = []
             if p.status == True:
-                photoList.append(p)
+                temp.append(True)
+                temp.append(p)
+                photoList.append(temp)
 
-
-    for p in photoList:
-        print("------------->>>>", p, flush=True)
-    return render(request,"pictureApp/userPrivatePhotos.html", {
+    return render(request,"pictureApp/index.html", {
         "photo": photoList, 
         "form": form,
         "isSignIn": is_sign_in

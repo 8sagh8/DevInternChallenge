@@ -9,13 +9,13 @@
             <div class="col-sm-4"style="padding-top: 50px" >
                 <div class="card" >
                     <img src={{p.1.image.url}} alt="pictures" class="img-thumbnail" style="height :231px; width :600px"  >
-                    <div class="row" style="height:55px">
-                        <div class="col-lg-8" >
-                            <input class="check" type="checkbox"  data-id="{{p.1.id}}">
-                            <label style="color: red; font-size: 18px;">{{p.1.title}}</label>
+                    <div class="row mt-3 ml-2 mr-2" style="height:55px">
+                        <div class="col-lg-9 " >
+                            &nbsp;  <input class="check" type="checkbox"  data-id="{{p.1.id}}">
+                            <label style="color: red; font-size: 18px;"> &nbsp; {{p.1.title}}</label>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             {% if p.0 %}
                             <div class="row mt-2"  >
 
@@ -29,7 +29,7 @@
                                     </a>
                                     
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <a >
                 <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{p.1.id}}"><i class="far fa-edit"></i></button>
                                     </a>
