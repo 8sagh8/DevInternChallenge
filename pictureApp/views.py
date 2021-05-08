@@ -85,7 +85,6 @@ def deleteMultiPhoto(request):
 
 # Persisting Photo title after modification
 def persistPhoto(request, _id):
-    print("-------------------------I am in PersistPhoto", flush=True)
     if request.method == "POST":
         title = request.POST['newTitle']
         photo_obj = Photo.objects.get(id=eval(_id))
@@ -94,8 +93,8 @@ def persistPhoto(request, _id):
 
     return redirect ("/")
 
+# Search Photo by title provided by user
 def searchPhoto(request):
-    print("-------------------------I am in Search", flush=True)
     is_sign_in = isSignIn(request)  #get is signed in
     search_value = None
     form=ImageForm()
@@ -104,31 +103,30 @@ def searchPhoto(request):
 
     if request.method == 'POST':
         search_value = request.POST['search_input']
-    print("-------------------------PASS METHOD", flush=True)
-    if search_value != None:
-        # for p in obj:
-            # if p.status == False or (p.user == str(request.user)): 
-            #     if search_value.lower() in p.title.lower():
-        #     photoList.append(p)
-        # photoList.reverse()
-        # for p in photoList:
-        #     print("~~~", p, flush=True)
-        photoList = obj
-        return render(request,"pictureApp/index.html", {
-            "isSignIn": is_sign_in,
-            "form": form,
-            "photo": photoList
-        })
-        
-    print("-------------------------PASS FOR LOOP", flush=True)
-    
+        search_value = search_value.lower()
 
-    return redirect("/")
-    # return render(request, 'pictureApp/index.html', {
-    #     "photo": photoList,
-    #     "form": form,
-    #     "isSignIn": is_sign_in
-    # });
+    if search_value != None:
+        for p in obj:
+            temp = []
+            if search_value in p.title.lower():
+                if str(request.user) == p.user:
+                    temp.append(True)   # Allow rights to edit photos
+                    temp.append(p)
+                    photoList.append(temp)
+                else:
+                    temp.append(False)   # Dont allow to edit photos
+                    if p.status == False:    # False means others' user photo is public
+                        temp.append(p)
+                        photoList.append(temp)
+            
+        photoList.reverse()
+
+    return render(request,"pictureApp/index.html", {
+        "isSignIn": is_sign_in,
+        "form": form,
+        "photo": photoList
+    })
+        
 
 # change status from Private to Public and ViceVersa
 def statusChange(request, _id):
