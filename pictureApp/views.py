@@ -40,14 +40,14 @@ def index(request):
     is_sign_in = isSignIn(request)  #get is signed in
 
     if request.method == "POST":
-        form=ImageForm(data=request.POST,files=request.FILES)
+        form=PhotoForm(data=request.POST,files=request.FILES)
         if form.is_valid():
             form.save()
             temp = Photo.objects.latest('id')
             temp.user = str(request.user)
             temp.save()
     else:
-        form=ImageForm() 
+        form=PhotoForm() 
     
     photoList = currentPhoto(request)
 
@@ -97,7 +97,7 @@ def persistPhoto(request, _id):
 def searchPhoto(request):
     is_sign_in = isSignIn(request)  #get is signed in
     search_value = None
-    form=ImageForm()
+    form=PhotoForm()
     photoList = []
     obj = Photo.objects.all()
 
@@ -142,7 +142,7 @@ def statusChange(request, _id):
 # to display only Current User's Private Photos
 def userPrivatePhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
-    form=ImageForm()    
+    form=PhotoForm()    
     photoList = []
     obj = Photo.objects.all()
 
@@ -163,7 +163,7 @@ def userPrivatePhotos(request):
 # to display only Current User's Public Photos
 def userPublicPhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
-    form=ImageForm()    
+    form=PhotoForm()    
     photoList = []
     obj = Photo.objects.all()
 
@@ -184,7 +184,7 @@ def userPublicPhotos(request):
 # to display only Current User's All Photos
 def userAllPhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
-    form=ImageForm()    
+    form=PhotoForm()    
     photoList = []
     obj = Photo.objects.all()
 
@@ -204,7 +204,7 @@ def userAllPhotos(request):
 # to display All Public Photo of Current User's and Other Users
 def allPublicPhotos(request):
     is_sign_in = isSignIn(request)  #get is signed in
-    form=ImageForm()    
+    form=PhotoForm()    
     photoList = []
     obj = Photo.objects.all()
 
@@ -247,7 +247,7 @@ def login(request):
             isValidEntry = True
             
     is_sign_in = isSignIn(request)  # get is signed in
-    form=ImageForm()
+    form=PhotoForm()
     photoList = currentPhoto(request)
 
     return render(request, 'pictureApp/index.html', {

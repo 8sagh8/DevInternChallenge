@@ -1,7 +1,7 @@
 from django import forms
 from .models import *
 
-class ImageForm(forms.ModelForm):
+class PhotoForm(forms.ModelForm):
     class Meta:
         model=Photo
         fields=("title","image")
