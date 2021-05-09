@@ -10,13 +10,11 @@
         <link rel="stylesheet" href="../../static/pictureApp/styles.css">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        
-
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
         <nav class="navbar navbar-inverse">
-            <a  href="#" style="position: absolute; color:aqua; font-size: larger; padding-left: 20px;"><h1>Photo Gallery</h1></a>           
+            <a  href="{% url 'pictureApp:index' %}" style="position: absolute; color:aqua; font-size: larger; padding-left: 20px;"><h1>Photo Gallery</h1></a>           
 
             {% if isSignIn %}
                 <a href="{% url 'pictureApp:logout' %}" style="font-size: medium; position: absolute; right: 20px">
@@ -39,10 +37,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">LogIn Page</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <h5 class="modal-title" id="exampleModalLabel">LogIn Page</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <form method="POST" action="{% url 'pictureApp:login' %}">
@@ -54,8 +52,7 @@
                             <div class="form-group">
                             <label>Password</label>
                             <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                            </div>
-                            
+                            </div>              
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
@@ -64,7 +61,6 @@
         </div>
 
         <div style="text-align: center;">
-
             <form action="{% url 'pictureApp:searchPhoto' %}" method="POST">
                 {% csrf_token %}
                 <div class="input-group rounded" style="width: 50%; margin-left: 25%; margin-bottom: 15px;" >
@@ -75,7 +71,14 @@
                     </button>
                 </div>
             </form>
-
+            
+            {% if pageName == 'addMultiplePhotos' %}
+            <span> 
+                <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">
+                    Back to Home Page without Saving Photos
+                </a>    
+            </span>
+            {% elif isSignIn %}
             <span>  
                 <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">Home Page</a>
                 <button id="displayAdd" data-toggle="modal" data-target="#addSinglePhoto" class="btn btn-primary" type="submit">Add Single Photo</button>
@@ -94,33 +97,31 @@
                     </span>
                 </span>
             </span>
-       
+            {% endif %}
             <hr />
 
             <!-- Modal -->
             <div class="modal fade" id="addSinglePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Single Photo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Single Photo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="." method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label >Photo Title: </label>  {{form.title}} 
+                                {{form.image}}
+                                
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-lg btn-success">Upload</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form action="." method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <label >Photo Title: </label>  {{form.title}} 
-                            {{form.image}}
-                            
-                            
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-lg btn-success">Upload</button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                </div>
                 </div>
             </div>
 
@@ -187,7 +188,6 @@
                     $("#formDiv").show();
                 });
 
-
                 // display form div to add a Photo on click
                 $("#displayDelete").click(function(){
                     hideAllFunction();
@@ -198,28 +198,15 @@
                         arr.push(checkedBox_ids);
                     });
                     
-
-
                     $.ajax({
-                            type: 'POST',
-                            headers: { "X-CSRFToken": '{{csrf_token}}' },
+                        type: 'POST',
+                        headers: { "X-CSRFToken": '{{csrf_token}}' },
                             url: 'http://127.0.0.1:8000/deleteMultiPhoto/',
-                            
-                            data: {data : arr,
-                            }, 
-                            success: function (data) {
-
-                                // window.location('http://127.0.0.1:8000/')
-                          location.reload();
-
-                        
-
-                            },
-                            error: function() { 
-                                // window.location('http://127.0.0.1:8000/')
-                                 location.reload();
-                            }
-                        });
+                            data: {data : arr,}, 
+                            success: function (data) { location.reload(); },
+                            error: function() { location.reload(); 
+                        }
+                    });
                 });
             });
         </script>

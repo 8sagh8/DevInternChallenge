@@ -6,7 +6,14 @@ import os
 
 from .form import *
 
-
+# Function to delete all the pictures without title
+def delNoTitle():
+    obj = Photo.objects.all()
+    for p in obj:
+        if p.title == 'NoNameTitle':
+            file_path = 'static/photosFolder/' + str(p.image)   # get file full path
+            os.remove(file_path)    # delete file from local folder
+            p.delete()      # delete object data from database
 
 #Function to know SignIn or Not
 def isSignIn(request):
@@ -37,6 +44,7 @@ def currentPhoto(request):
 
 # Create your views here.
 def index(request):
+    delNoTitle()
     is_sign_in = isSignIn(request)  #get is signed in
 
     if request.method == "POST":
@@ -59,13 +67,81 @@ def index(request):
 
 # Add Multiple Photos
 def addMultiplePhotos(request):
+    photoList = []
     if request.method == "POST":
         images = request.FILES.getlist('images')
         for i in images:
-            photo = Photo.objects.create(title="New", image=i, user=str(request.user))
+            photo = Photo.objects.create(title="NoNameTitle", image=i, user=str(request.user))
             photo.save()
 
-    return redirect('/')
+    form = PhotoForm()
+    is_sign_in = isSignIn(request)  #get is signed in
+    pList = currentPhoto(request)
+
+    for p in pList:
+        if p[1].title == "NoNameTitle":
+            if p[1].user == str(request.user):
+                photoList.append(p)
+
+    return render(request,"pictureApp/multiPhoto.html", {
+        "photo":photoList, 
+        "form": form,
+        "isSignIn": is_sign_in,
+        "pageName": 'addMultiplePhotos'
+        })
+
+# Add Title Multiple Photos
+def titleMultiplePhotos(request):
+    photoList = []
+    if request.method == "POST":
+        _id = request.POST.getlist("multiID")
+        _title = request.POST.getlist("multiTitle")
+        _size = len(_id)
+
+        for i in range(0,_size):
+            _obj = Photo.objects.get(id = eval(_id[i]))
+            _obj.title = _title[i]
+            _obj.save()
+        
+        return redirect('/') 
+
+    form = PhotoForm()
+    is_sign_in = isSignIn(request)  #get is signed in
+    pList = currentPhoto(request)
+
+    for p in pList:
+        if p[1].title == "NoNameTitle":
+            if p[1].user == str(request.user):
+                photoList.append(p)
+
+    return render(request,"pictureApp/multiPhoto.html", {
+        "photo":photoList, 
+        "form": form,
+        "isSignIn": is_sign_in
+        })
+
+def deleteAPhoto(request, _id):
+    photo_obj = Photo.objects.get(id=eval(_id)) # get photo object by id
+    file_path = 'static/photosFolder/' + str(photo_obj.image)   # get file full path
+    os.remove(file_path)    # delete file from local folder
+    photo_obj.delete()      # delete object data from database
+
+    form = PhotoForm()
+    is_sign_in = isSignIn(request)  #get is signed in
+    pList = currentPhoto(request)
+    photoList = []
+
+    for p in pList:
+        if p[1].title == "NoNameTitle":
+            if p[1].user == str(request.user):
+                photoList.append(p)
+
+    return render(request,"pictureApp/multiPhoto.html", {
+        "photo":photoList, 
+        "form": form,
+        "isSignIn": is_sign_in,
+        "pageName": 'addMultiplePhotos'
+        })
 
 def deletePhoto(request, _id):
     photo_obj = Photo.objects.get(id=eval(_id)) # get photo object by id
@@ -77,7 +153,6 @@ def deletePhoto(request, _id):
 
 def deleteMultiPhoto(request):
    
-    print("~~~~~ I am In deleteMulti", flush=True )
     if request.method == 'POST':
         id_List = request.POST.getlist('data[]')
 
@@ -87,10 +162,7 @@ def deleteMultiPhoto(request):
             os.remove(file_path)    # delete file from local folder
             p_obj.delete()
 
-    return ("done");
-    print("******* I am done", flush=True)
-    # return json(success, "done", 200)
-    # return redirect('/')
+    return redirect('/')
 
 # Persisting Photo title after modification
 def persistPhoto(request, _id):
@@ -234,6 +306,7 @@ def allPublicPhotos(request):
         "form": form,
         "isSignIn": is_sign_in
         })
+
 ### Log out View
 def logout(request):
     auth.logout(request) # logout

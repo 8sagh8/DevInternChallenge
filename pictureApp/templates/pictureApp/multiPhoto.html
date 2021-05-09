@@ -1,0 +1,48 @@
+{% extends 'pictureApp/sample.html' %}
+
+{% block title %}Add Multiple Photos{% endblock %} 
+
+{% block body %}
+<div tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adding Photos Title</h5>
+            </div>
+            <form action="{% url 'pictureApp:titleMultiplePhotos' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <!--  -->
+                    {% for p in photo %}
+                        <!-- Modal -->
+                        <!-- <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLongTitle""> -->
+                        <div style = "text-align:center;" role="dialog" tabindex="-1" aria-labelledby="exampleModalLongTitle" >
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 id="photo{{ forloop.counter }}"> 
+                                            <input name="multiID" value={{p.1.id}} readonly style="display:none">
+                                            <input type="text" name="multiTitle" required size="50" placeholder="Enter Title of Photo {{ forloop.counter }} ">
+                                        </h5>
+                                        <a href="{% url 'pictureApp:deleteAPhoto' p.1.id %}" data-dismiss="modal" class="btn btn-primary">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="{{ p.1.image.url }}" name="multiImg" class="img-fluid" alt="Responsive image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!--  -->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
