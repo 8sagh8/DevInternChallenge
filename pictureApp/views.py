@@ -54,6 +54,8 @@ def index(request):
             temp = Photo.objects.latest('id')
             temp.user = str(request.user)
             temp.save()
+            
+            return redirect('/')
     else:
         form=PhotoForm() 
     
@@ -202,6 +204,7 @@ def searchPhoto(request):
             
         photoList.reverse()
 
+    search_value = None
     return render(request,"pictureApp/index.html", {
         "isSignIn": is_sign_in,
         "form": form,

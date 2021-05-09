@@ -33,7 +33,8 @@
         </nav> 
         
         <!-- Modal -->
-        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true" style="font-size: 18px;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -47,13 +48,15 @@
                             {% csrf_token %}
                             <div class="form-group">
                             <label>Username</label>
-                            <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username">
+                            <input type="text" name="username" class="form-control" id="exampleInputEmail1"
+                             aria-describedby="emailHelp" placeholder="Enter Username" style="font-size: 18px;">
                             </div>
                             <div class="form-group">
                             <label>Password</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                             placeholder="Password" style="font-size: 18px;">
                             </div>              
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" style="font-size: 14px;" >Submit</button>
                         </form>
                     </div>
                 </div>
@@ -64,8 +67,9 @@
             <form action="{% url 'pictureApp:searchPhoto' %}" method="POST">
                 {% csrf_token %}
                 <div class="input-group rounded" style="width: 50%; margin-left: 25%; margin-bottom: 15px;" >
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                    aria-describedby="search-addon" name="search_input" />
+                    <input type="search" class="form-control rounded" style=" font-size: large;"
+                     placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="search_input" />
+                    
                     <button class="input-group-text border-0" id="search-addon" type='submit'>
                     <i class="fas fa-search"></i>
                     </button>
@@ -74,22 +78,29 @@
             
             {% if pageName == 'addMultiplePhotos' %}
             <span> 
-                <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">
+                <a class="btn btn-primary" href="{% url 'pictureApp:index' %}"
+                 style="margin-right: 20px; font-size: 18px; border-radius: 15px;" role="button">
                     Back to Home Page without Saving Photos
                 </a>    
             </span>
             {% elif isSignIn %}
             <span>  
-                <a class="btn btn-primary" href="{% url 'pictureApp:index' %}" style="margin-right: 20px" role="button">Home Page</a>
-                <button id="displayAdd" data-toggle="modal" data-target="#addSinglePhoto" class="btn btn-primary" type="submit">Add Single Photo</button>
-                <button id="displayAdd" data-toggle="modal" data-target="#addMultiplePhoto" class="btn btn-primary" type="submit">Add Multiple Photos</button>
-                <button id="displayDelete" class="btn btn-primary" type="submit">Delete Multiple Photos</button>
+                <a class="btn btn-primary btn-font"
+                 style="margin-right: 20px; font-size: 18px; border-radius: 15px;"
+                  href="{% url 'pictureApp:index' %}" role="button">Home Page</a>
+                <button id="displayAdd" style="font-size: 18px;  border-radius: 15px;" data-toggle="modal"
+                 data-target="#addSinglePhoto" class="btn btn-primary" type="submit">Add Single Photo</button>
+                <button id="displayAdd" style="font-size: 18px; border-radius: 15px;" data-toggle="modal"
+                 data-target="#addMultiplePhoto" class="btn btn-primary" type="submit">Add Multiple Photos</button>
+                <button id="displayDelete" style="font-size: 18px; border-radius: 15px;" class="btn btn-primary"
+                 type="submit">Delete Multiple Photos</button>
 
                 <span class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" style="margin-left: 20px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle" style="margin-left: 20px; font-size: 18px; border-radius: 15px;"
+                     type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Filter Photo
                     </button>
-                    <span class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 18px; border-radius: 15px;">
                         <a class="dropdown-item" href="{% url 'pictureApp:userAllPhotos' %}">User All Photos</a>
                         <a class="dropdown-item" href="{% url 'pictureApp:userPrivatePhotos' %}">User Private Photos</a>
                         <a class="dropdown-item" href="{% url 'pictureApp:userPublicPhotos' %}">User Public Photos</a>
@@ -101,11 +112,12 @@
             <hr />
 
             <!-- Modal -->
-            <div class="modal fade" id="addSinglePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addSinglePhoto" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Single Photo</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"  style="font-size: 18px;">Add Single Photo</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -113,8 +125,9 @@
                         <div class="modal-body">
                             <form action="." method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <label >Photo Title: </label>  {{form.title}} 
-                                {{form.image}}
+                                <input style="width: 100%; height: auto; font-size: 18px; margin-bottom: 5px;"
+                                 placeholder="Enter Photo Title" {{form.title}}
+                                 {{form.image}}
                                 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-lg btn-success">Upload</button>
@@ -130,7 +143,7 @@
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Multiple Photos</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" style="font-size: 18px;">Add Multiple Photos</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -157,12 +170,12 @@
         {% endblock %}
         
         <!-- Footer -->
-        <div class="bg-info mt-8 " style="bottom: 0; width: 100%; 
-                    color: white; text-align: center; margin-top: 50px; height:auto !important;
-    min-height:100%;margin-top: 500px;"> 
+        <div class="bg-info mt-8 "
+            style="bottom: 0; width: 100%; color: white; text-align: center; margin-top: 50px;
+            height:auto !important; min-height:100%;margin-top: 500px;"> 
   
-            <h3 style="color:azure;">Website Developer: Sammar Abbas - 
-            <a href="mailto:mastersagh@hotmail.com"">Contact : mastersagh@hotmail.com</a></h3>
+            <h3 style="color:azure;">Website Developer: Sammar Abbas  -  
+            <a href="mailto:mastersagh@hotmail.com" style="color: aqua;">Email : mastersagh@hotmail.com</a></h3>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
