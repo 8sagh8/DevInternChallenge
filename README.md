@@ -12,8 +12,10 @@
 3. At right top click Login button
    ![Alt Text](readMeImages/login_&_search.png "LogIn & Search")
 4. Pre-Registered usernames and passwords
-   S.No | Username | Password
-   1. | admin | admin
-   2. | user-01 | photo1234
-   3. | user-02 | photo1234
-   4. | user-03 | photo1234
+
+   | S.No | Username | Password  |
+   | ---- | -------- | --------- |
+   | 1.   | admin    | admin     |
+   | 2.   | user-01  | photo1234 |
+   | 3.   | user-02  | photo1234 |
+   | 4.   | user-03  | photo1234 |
