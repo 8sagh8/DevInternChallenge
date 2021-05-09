@@ -25,6 +25,8 @@
 5. After Login nine (9) buttons / options are available for any user
    ![Alt Text](readMeImages/fiveButtons.png "Five Buttons")
 
+   ![Alt Text](readMeImages/nineButtons.png "Nine Buttons")
+
    | S.No | Button / Option        | Functionality                                       |
    | ---- | ---------------------- | --------------------------------------------------- |
    | 1.   | Home Page              | Navigate to Main/Home page                          |
@@ -37,4 +39,12 @@
    | 8.   | User Public Photos     | Current user's public images will filter            |
    | 9.   | All Public Photos      | Current user's and Others public images will filter |
 
-   ![Alt Text](readMeImages/nineButtons.png "Nine Buttons")
+6. Public Images from other users' are protected and not allowed to edit in any way
+   a. contain message "Not Yours Property"
+7. Public and Private images of current user has following options
+   a. CheckBox to select
+   b. Icon lock/unlock to change status from Private to Public and vice versa
+   c. Icon Edit to modify title of image
+   d. Icon Delete to delete image individually
+
+   ![Alt Text](readMeImages/mainPic.png "Main Image")
