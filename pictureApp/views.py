@@ -185,26 +185,25 @@ def searchPhoto(request):
     obj = Photo.objects.all()
 
     if request.method == 'POST':
-        search_value = request.POST['search_input']
+        search_value = request.POST.get('search_input', False)
         search_value = search_value.lower()
 
-    if search_value != None:
-        for p in obj:
-            temp = []
-            if search_value in p.title.lower():
-                if str(request.user) == p.user:
-                    temp.append(True)   # Allow rights to edit photos
-                    temp.append(p)
-                    photoList.append(temp)
-                else:
-                    temp.append(False)   # Dont allow to edit photos
-                    if p.status == False:    # False means others' user photo is public
+        if search_value != None:
+            for p in obj:
+                temp = []
+                if search_value in p.title.lower():
+                    if str(request.user) == p.user:
+                        temp.append(True)   # Allow rights to edit photos
                         temp.append(p)
                         photoList.append(temp)
+                    else:
+                        temp.append(False)   # Dont allow to edit photos
+                        if p.status == False:    # False means others' user photo is public
+                            temp.append(p)
+                            photoList.append(temp)
+                
+            photoList.reverse()
             
-        photoList.reverse()
-
-    search_value = None
     return render(request,"pictureApp/index.html", {
         "isSignIn": is_sign_in,
         "form": form,
