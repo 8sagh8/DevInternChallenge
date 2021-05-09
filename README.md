@@ -40,11 +40,11 @@
    | 9.   | All Public Photos      | Current user's and Others public images will filter |
 
 6. Public Images from other users' are protected and not allowed to edit in any way
-   a. contain message "Not Yours Property"
+   ..1. contain message "Not Yours Property"
 7. Public and Private images of current user has following options
-   a. CheckBox to select
-   b. Icon lock/unlock to change status from Private to Public and vice versa
-   c. Icon Edit to modify title of image
-   d. Icon Delete to delete image individually
+   ..1. CheckBox to select
+   ..2. Icon lock/unlock to change status from Private to Public and vice versa
+   ..3. Icon Edit to modify title of image
+   ..4. Icon Delete to delete image individually
 
    ![Alt Text](readMeImages/mainPic.png "Main Image")
